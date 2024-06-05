@@ -44,7 +44,9 @@ const App = () => {
 
       <View style={styles.content}>
         <View style={styles.tabs}>
-          <TouchableOpacity onPress={() => handleTabPress('Feed')} style={[styles.tab, selectedTab === 'Feed' && styles.selectedTab]}>
+          <TouchableOpacity 
+          onPress={() => handleTabPress('Feed')} 
+          style={[styles.tab, selectedTab === 'Feed' && styles.selectedTab]}>
             <Text style={styles.tabText}>Feed</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleTabPress('Perfil')} style={[styles.tab, selectedTab === 'Perfil' && styles.selectedTab]}>
