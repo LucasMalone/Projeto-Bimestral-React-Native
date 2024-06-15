@@ -1,69 +1,80 @@
-import { Button, StyleSheet, Text, View } from 'react-native'
+// HomeScreen.js
 
-const HomeScreen = ({navigation}) => {
-    return (
-        <View style={styles.container}>
-            <Text>You're in Home</Text>
-            <Button 
-                title='Details'
-                onPress={() => navigation.navigate('Detalhes')}
-            />
+import { Button, StyleSheet, Text, View } from 'react-native';
 
-            <Button
-                title='Login'
-                onPress={() => navigation.navigate('Logar')}
-            />
-                <Button
-                  title="Ir para Reclamações e Sugestões"
-                  onPress={() => navigation.navigate('Reclamacoes e Sugestoes')}
-                />
+const HomeScreen = ({ navigation }) => {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Você está na Home</Text>
+      
+      <Button
+        title="Sobre nós"
+        onPress={() => navigation.navigate('Sobrenos')}
+        style={styles.button}
+      />
 
-                 <Button
-                  title="Ir para Atividades"
-                  onPress={() => navigation.navigate('Atividades')}
-                />
+      <Button
+        title="Encerrar Sessão"
+        onPress={() => navigation.navigate('Login')}
+        style={styles.button}
+      />
 
-                <Button
-                  title="Ir para Perfil"
-                  onPress={() => navigation.navigate('Perfil')}
-                />
+      <Button
+        title="Perfil"
+        onPress={() => navigation.navigate('Perfil')}
+        style={styles.button}
+      />
 
-                <Button
-                  title="Ir para Turma"
-                  onPress={() => navigation.navigate('Turma')}
-                />
+      <Button
+        title="Turma"
+        onPress={() => navigation.navigate('Turma')}
+        style={styles.button}
+      />
 
-                <Button
-                  title="Ir para AluProf"
-                  onPress={() => navigation.navigate('AluProf')}
-                />
+      <Button
+        title="Alunos e Professores"
+        onPress={() => navigation.navigate('AluProf')}
+        style={styles.button}
+      />
 
-                <Button
-                  title="Ir para Vagas"
-                  onPress={() => navigation.navigate('Vagas')}
-                />
+      <Button
+        title="Vagas"
+        onPress={() => navigation.navigate('Vagas')}
+        style={styles.button}
+      />
 
-                <Button
-                  title="Ir para Cardapio"
-                  onPress={() => navigation.navigate('Cardapio')}
-                />
+      <Button
+        title="Cardapio"
+        onPress={() => navigation.navigate('Cardapio')}
+        style={styles.button}
+      />
 
-                <Button
-                  title="Ir para Conf"
-                  onPress={() => navigation.navigate('Conf')}
-                />
+      <Button
+        title="Configurações"
+        onPress={() => navigation.navigate('Conf')}
+        style={styles.button}
+      />
+    </View>
+  );
+};
 
-              </View>
-            );
-          };
-
-export default HomeScreen
+export default HomeScreen;
 
 const styles = StyleSheet.create({
-    container: {
-        flex:1,
-        backgroundColor:'#fff',
-        alignItems:'center',
-        justifyContent:'center',    
-    },
-})
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  button: {
+    marginTop: 10,
+    width: '80%',
+  },
+});

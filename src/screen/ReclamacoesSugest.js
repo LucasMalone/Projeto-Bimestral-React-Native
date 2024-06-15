@@ -1,44 +1,84 @@
-// ReclamacoesSugest.js
-import React, {useState} from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, Button, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import SwipeGestures from 'react-native-swipe-gestures';
 
 const ReclamacoesSugest = () => {
-  const [assunto, setAssunto]= useState('');
+  const navigation = useNavigation();
+  const [assunto, setAssunto] = useState('');
   const [mensagem, setMensagem] = useState('');
+  const [mensagemEnviada, setMensagemEnviada] = useState(false);
+  const [mensagemErro, setMensagemErro] = useState('');
 
-  const EnviarReclamacoesouSugestoes=()=>{
+  const EnviarReclamacoesouSugestoes = () => {
+    if (!assunto || !mensagem) {
+      setMensagemErro('Por favor, preencha todos os campos.');
+      setTimeout(() => {
+        setMensagemErro('');
+      }, 5000);
+      return;
+    }
+
     console.log('Assunto: ', assunto);
     console.log('Mensagem: ', mensagem);
+    setAssunto('');
+    setMensagem('');
+    setMensagemEnviada(true);
+    setMensagemErro('');
+
+    setTimeout(() => {
+      setMensagemEnviada(false);
+    }, 5000);
+  };
+
+  const onSwipeLeft = () => {
+    navigation.navigate('Home');
+  };
+
+  const onSwipeRight = () => {
+    // Não faz nada na tela de ReclamacoesSugest
   };
 
   return (
-    <View style={styles.container}>
-      <TextInput
-      style={styles.inputAssunto}
-      placeholder="Assunto"
-      value={assunto}
-      onChangeText={text=>setAssunto(text)}
-      />
+    <SwipeGestures
+      onSwipeLeft={onSwipeLeft}
+      onSwipeRight={onSwipeRight}
+      config={{ velocityThreshold: 0.1, directionalOffsetThreshold: 80 }}
+      style={styles.container}
+    >
+      <View style={styles.container}>
+        <TextInput
+          style={styles.inputAssunto}
+          placeholder="Assunto"
+          value={assunto}
+          onChangeText={text => setAssunto(text)}
+        />
 
-      <TextInput
-      style={[styles.inputMensagem,{height:150}]}
-      multiline
-      placeholder="Descreva a sua Reclamação ou Sugestão"
-      value={mensagem}
-      onChangeText={text=>setMensagem(text)}
-      />
+        <ScrollView
+          style={styles.inputMensagemContainer}
+          contentContainerStyle={styles.inputMensagemContentContainer}
+        >
+          <TextInput
+            style={styles.inputMensagem}
+            multiline
+            placeholder="Descreva a sua Reclamação ou Sugestão"
+            value={mensagem}
+            onChangeText={text => setMensagem(text)}
+          />
+        </ScrollView>
 
-      <Button
-      title="Enviar" onPress={EnviarReclamacoesouSugestoes}
-      />
-
-      <View style={styles.navbarPaginas}>
-        <Icon name="comment" size={30} color="#900" onPress={() => navigation.navigate('ReclamacoesSugest')} />
-        <Icon name="home" size={30} color="#900" onPress={() => navigation.navigate('HomeScreen')} />
-        <Icon name="tasks" size={30} color="#900" onPress={() => navigation.navigate('Atividades')} />
+        <Button
+          title="Enviar"
+          onPress={EnviarReclamacoesouSugestoes}
+        />
+        {mensagemErro !== '' && (
+          <Text style={styles.mensagemErro}>{mensagemErro}</Text>
+        )}
+        {mensagemEnviada && (
+          <Text style={styles.mensagemEnviada}>Mensagem enviada com sucesso!</Text>
+        )}
       </View>
-    </View>
+    </SwipeGestures>
   );
 };
 
@@ -48,36 +88,41 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 20,
+    width: '100%',
+    backgroundColor: '#f0f0f0',
   },
-
   inputAssunto: {
+    width: '100%',
+    height: 50,
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
     padding: 10,
     marginVertical: 10,
-    width: '100%',
   },
-
-  inputMensagem:{
+  inputMensagemContainer: {
     borderWidth: 1,
     borderColor: '#ccc',
     borderRadius: 5,
     width: '100%',
-    padding: 10
+    maxHeight: 300,
+    marginBottom: 10,
   },
-    navbarPaginas: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    position: 'absolute',
-    bottom: 0,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#ccc',
-    paddingVertical: 10,
+  inputMensagemContentContainer: {
+    flexGrow: 1,
+  },
+  inputMensagem: {
+    flex: 1,
+    padding: 10,
+  },
+  mensagemEnviada: {
+    color: 'green',
+    marginTop: 10,
+  },
+  mensagemErro: {
+    color: 'red',
+    marginTop: 10,
   },
 });
 
 export default ReclamacoesSugest;
-

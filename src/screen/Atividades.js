@@ -1,39 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Button, Image, TouchableWithoutFeedback, Alert} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, Text, StyleSheet, Image, TouchableWithoutFeedback, Alert, ScrollView } from 'react-native';
+import SwipeGestures from 'react-native-swipe-gestures';
 
-const Atividades = () => {
+const Atividades = ({ navigation }) => {
   const [notificacoes, setNotificacoes] = useState([]);
 
   useEffect(() => {
-    // Adicionar uma notificação ao carregar a página
     adicionarNotificacao();
-  }, []); // Executa apenas uma vez, quando o componente é montado
+  }, []);
 
-  // Função para adicionar uma nova notificação
   const adicionarNotificacao = () => {
     const novaNotificacao = {
       id: Math.random().toString(),
       usuario: 'Usuario',
       atividade: 'reagiu ao seu comentário',
       fotoUsuario: 'https://th.bing.com/th/id/OIP.5yYQS45nqRuMUGZL6lBN9QHaHa?rs=1&pid=ImgDetMain'
-//'https://thumbs.dreamstime.com/b/anonymous-male-profile-sign-circle-man-avatar-graphic-sign-anonymous-male-profile-sign-circle-isolated-white-215427929.jpg'
     };
-    setNotificacoes([...notificacoes, novaNotificacao]);
+    setNotificacoes(prevNotificacoes => [...prevNotificacoes, novaNotificacao]);
   };
 
-  // Função para excluir uma notificação
   const excluirNotificacao = (id) => {
-    const novaListaNotificacoes = notificacoes.filter((notificacao) => notificacao.id !== id);
-    setNotificacoes(novaListaNotificacoes);
+    setNotificacoes(prevNotificacoes => prevNotificacoes.filter(notificacao => notificacao.id !== id));
   };
 
   const handleLongPressNotification = (id) => {
     Alert.alert(
-      [
       'Opções',
       'O que você deseja fazer?',
-
+      [
         { text: 'Cancelar', onPress: () => console.log('Cancelar') },
         { text: 'Excluir', onPress: () => excluirNotificacao(id) },
         { text: 'Visualizar', onPress: () => alert('Visualizar') }
@@ -42,27 +36,36 @@ const Atividades = () => {
     );
   };
 
-  return (
-     <View style={styles.container}>
-      {/* Renderiza as notificações */}
-      {notificacoes.map((notificacao) => (
-        <TouchableWithoutFeedback key={notificacao.id} onLongPress={() => handleLongPressNotification(notificacao.id)}>
-          <View style={styles.notificacaoContainer}>
-            <View style={styles.notificacaoContent}>
-              <Image source={{ uri: notificacao.fotoUsuario }} style={styles.fotoUsuario} />
-              <Text>{`${notificacao.usuario} ${notificacao.atividade}`}</Text>
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      ))}
+  const onSwipeLeft = () => {
+    // Não faz nada ao deslizar para a esquerda
+  };
 
-      {/* Barra de navegação */}
-      <View style={styles.navbarPaginas}>
-        <Icon name="comment" size={30} color="#900" onPress={() => navigation.navigate('ReclamacoesSugest')} />
-        <Icon name="home" size={30} color="#900" onPress={() => navigation.navigate('HomeScreen')} />
-        <Icon name="tasks" size={30} color="#900" onPress={() => navigation.navigate('Atividades')} />
-      </View>
-    </View>
+  const onSwipeRight = () => {
+    navigation.navigate('HomeScreen'); // Volta para a tela HomeScreen ao deslizar para a direita
+  };
+
+  return (
+    <SwipeGestures
+      onSwipeLeft={onSwipeLeft}
+      onSwipeRight={onSwipeRight}
+      config={{ velocityThreshold: 0.1, directionalOffsetThreshold: 80 }}
+      style={styles.container}
+    >
+      <ScrollView>
+        <View style={styles.container}>
+          {notificacoes.map((notificacao) => (
+            <TouchableWithoutFeedback key={notificacao.id} onLongPress={() => handleLongPressNotification(notificacao.id)}>
+              <View style={styles.notificacaoContainer}>
+                <View style={styles.notificacaoContent}>
+                  <Image source={{ uri: notificacao.fotoUsuario }} style={styles.fotoUsuario} />
+                  <Text>{`${notificacao.usuario} ${notificacao.atividade}`}</Text>
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
+          ))}
+        </View>
+      </ScrollView>
+    </SwipeGestures>
   );
 };
 
@@ -71,15 +74,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
-    paddingHorizontal: 10, // Espaçamento horizontal
-    paddingTop: 10, // Espaçamento superior
+    paddingHorizontal: 10,
+    paddingTop: 10,
+    width: '100%', 
+    backgroundColor: '#f0f0f0',
   },
   notificacaoContainer: {
     flexDirection: 'column',
     alignItems: 'flex-start',
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: '#000',
+    borderColor: '#ccc',
     padding: 10,
     width: '100%'
   },
@@ -93,17 +98,6 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 25,
     marginRight: 10,
-  },
-  navbarPaginas: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    position: 'absolute',
-    bottom: 0,
-    backgroundColor: '#fff',
-    borderTopWidth: 1,
-    borderTopColor: '#ccc',
-    paddingVertical: 10,
   },
 });
 
