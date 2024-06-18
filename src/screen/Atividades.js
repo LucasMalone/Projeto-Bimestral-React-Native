@@ -72,12 +72,10 @@ const Atividades = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
     paddingHorizontal: 10,
     paddingTop: 10,
-    width: '100%', 
     backgroundColor: '#f0f0f0',
+    width: '100%', // Deixa o container principal expandir 100% da largura do dispositivo
   },
   notificacaoContainer: {
     flexDirection: 'column',
@@ -86,12 +84,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ccc',
     padding: 10,
-    width: '100%'
+    width: '100%', // Ajusta para preencher 100% da largura do container principal
   },
   notificacaoContent: {
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
+    width: '100%' // Ajusta para preencher 100% da largura da notificação
   },
   fotoUsuario: {
     width: 50,
