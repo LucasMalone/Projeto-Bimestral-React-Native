@@ -106,10 +106,6 @@ export default function App() {
         name="Sobrenos"
         component={Sobrenos}
         />
-        <Stack.Screen
-        name="Cardapio"
-        component={Cardapio}
-        />
       </Stack.Navigator>
     </NavigationContainer>
   );
