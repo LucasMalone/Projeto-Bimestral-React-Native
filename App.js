@@ -57,7 +57,7 @@ export default function App() {
           name="Perfil"
           component={Perfil}
         />
-          <Stack.Screen
+        <Stack.Screen
           name="Turma"
           component={Turma}
         />
@@ -70,16 +70,16 @@ export default function App() {
           component={Vagas}
         />
         <Stack.Screen
-          name="Cardapio"
-          component={Cardapio}
-        />
-        <Stack.Screen
           name="Conf"
           component={Conf}
         />
         <Stack.Screen
         name="Sobrenos"
         component={Sobrenos}
+        />
+        <Stack.Screen
+        name="Cardapio"
+        component={Cardapio}
         />
       </Stack.Navigator>
     </NavigationContainer>
