@@ -1,9 +1,8 @@
-// App.js
-
-import React, { useState } from 'react';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 import LoginScreen from './src/screen/LoginScreen';
 import HomeScreen from './src/screen/HomeScreen';
 import ReclamacoesSugest from './src/screen/ReclamacoesSugest';
@@ -18,6 +17,20 @@ import Sobrenos from './src/screen/Sobrenos';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
+const Drawer = createDrawerNavigator();
+
+// Defina o conteúdo do Drawer
+function CustomDrawerContent(props) {
+  return (
+    <DrawerContentScrollView {...props}>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label="Configurações"
+        onPress={() => props.navigation.navigate('Conf')}
+      />
+    </DrawerContentScrollView>
+  );
+}
 
 const TabNavigator = () => (
   <Tab.Navigator
@@ -37,19 +50,31 @@ const TabNavigator = () => (
   </Tab.Navigator>
 );
 
-export default function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // Estado para rastrear se o usuário está logado
+const DrawerNavigator = () => (
+  <Drawer.Navigator drawerContent={props => <CustomDrawerContent {...props} />}>
+    <Drawer.Screen name="Home" component={TabNavigator} />
+    <Drawer.Screen name="Perfil" component={Perfil} />
+    <Drawer.Screen name="Turma" component={Turma} />
+    <Drawer.Screen name="AluProf" component={AluProf} />
+    <Drawer.Screen name="Vagas" component={Vagas} />
+    <Drawer.Screen name="Cardapio" component={Cardapio} />
+    <Drawer.Screen name="Conf" component={Conf} />
+    <Drawer.Screen name="Sobrenos" component={Sobrenos} />
+    <Drawer.Screen name="Encessar Sessão" component={LoginScreen} />
+  </Drawer.Navigator>
+);
 
+export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={isLoggedIn ? "Home" : "Login"}>
+      <Stack.Navigator initialRouteName="DrawerNavigator">
         <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }} // Esconde o cabeçalho na tela de Login
+          name="DrawerNavigator"
+          component={DrawerNavigator}
+          options={{ headerShown: false }} // Esconde o cabeçalho na tela principal do DrawerNavigator
         />
         <Stack.Screen
-          name="Home"
+          name="TabNavigator"
           component={TabNavigator}
           options={{ headerShown: false }} // Esconde o cabeçalho na tela de Home
         />
@@ -57,7 +82,7 @@ export default function App() {
           name="Perfil"
           component={Perfil}
         />
-        <Stack.Screen
+          <Stack.Screen
           name="Turma"
           component={Turma}
         />
@@ -68,6 +93,10 @@ export default function App() {
         <Stack.Screen
           name="Vagas"
           component={Vagas}
+        />
+        <Stack.Screen
+          name="Cardapio"
+          component={Cardapio}
         />
         <Stack.Screen
           name="Conf"
